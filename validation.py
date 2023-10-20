@@ -116,10 +116,10 @@ def Update_Format_Hours_To_Points():
     # Converter os dados em um DataFrame
     df = pd.DataFrame(dados, columns=header)
 
-    nova_aba = workbook.create_sheet('NomeDaNovaAba')
+    nova_aba = workbook.create_sheet('Pontos')
     
     # Aplicar a função de conversão às colunas de datas
-    df.iloc[:, 1:] = df.iloc[:, 1:].applymap(converter_valor)
+    df.iloc[:, 1:] = df.iloc[:, 1:].map(converter_valor)
 
     # # Soma por linha nas colunas de datas
     df['Total por Linha'] = df.iloc[:, 1:].sum(axis=1)
@@ -128,10 +128,6 @@ def Update_Format_Hours_To_Points():
     for row in dataframe_to_rows(df, index=False, header=True):
         nova_aba.append(row)
 
-    # Excluir a aba original
-    # workbook.remove(workbook['NomeDaSuaAba'])
-
-    # Salvar a planilha com a nova aba e os dados
     workbook.save(fileExcel)
 
     
