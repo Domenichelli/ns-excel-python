@@ -1,5 +1,5 @@
 import pandas as pd
-from validation import remove_weekends_and_holidays, adjust_lunch_time, generate_excel
+from validation import remove_weekends_and_holidays, adjust_lunch_time, generate_excel, Update_Format_Hours_To_Points
 
 def processar_arquivo_excel(arquivo_excel, colunas_desejadas, hora_almoco):
     df = pd.read_excel(
@@ -18,16 +18,12 @@ def processar_arquivo_excel(arquivo_excel, colunas_desejadas, hora_almoco):
     # Defina a nova coluna como o índice do DataFrame
     df.set_index('indice', inplace=True)
     
-    pivot_table = pd.pivot_table(df, values=['Total'], index=['Nome'], columns=['Data'], aggfunc='sum')
-    
-    pivot_table.index.name = None
-    pivot_table.columns.name = None
-    
-    pivot_table = pivot_table.fillna('0:00')
+    pivot_table = df.pivot_table(index='Nome', columns='Data', values='Total', aggfunc='sum')
     
     generate_excel(pivot_table)
     
-    print(df)
+    Update_Format_Hours_To_Points()
+    
     return df.head(1000)
 
 
